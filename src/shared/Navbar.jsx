@@ -15,9 +15,8 @@ const Navbar = () => {
     const links = (
         <>
             <li><NavLink className='/'>Home</NavLink></li>
+            <li><NavLink className='/myApplications'>My Applications</NavLink></li>
             <li><NavLink className='/'>Home</NavLink></li>
-            <li><NavLink className='/'>Home</NavLink></li>
-            
         </>
     );
     return (

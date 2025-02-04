@@ -1,6 +1,13 @@
 import { FaLinkedin, FaGithub, FaFilePdf } from "react-icons/fa";
+import { useParams } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const JobApply = () => {
+
+  const {id} = useParams();
+  const {user} = useAuth();
+  
 
     const handleJobApply = e => {
         e.preventDefault();
@@ -8,7 +15,32 @@ const JobApply = () => {
         const linkedIn = form.linkedinUrl.value;
         const github = form.githubUrl.value;
         const resume = form.resumeUrl.value;
-        console.log({linkedIn,github,resume});
+        
+        const jobApplication = {
+          job_id: id,
+          applicant_email: user.email,
+          linkedIn,
+          github,
+          resume
+        }
+
+        fetch('http://localhost:5000/job-applications',{
+          method: "POST",
+          headers: {
+            'content-type': 'application/json'
+          },
+          body: JSON.stringify(jobApplication)
+        })
+        .then(res => res.json())
+        .then(data => {
+          if(data.insertedId){
+            Swal.fire({
+              title: " Your Apply Successfully done!",
+              icon: "success",
+              draggable: true
+            });
+          }
+        })
     }
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -16,7 +48,7 @@ const JobApply = () => {
         onSubmit={handleJobApply}
         className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"
       >
-        <h2 className="text-2xl font-bold mb-6 text-center">Profile Links</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">Apply Job And Good Luck!</h2>
 
         {/* LinkedIn URL Input */}
         <div className="mb-4">
